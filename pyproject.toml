@@ -4,4 +4,8 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12.12"
-dependencies = []
+dependencies = [
+    "mlb-statsapi>=1.9.0",
+    "rich>=14.3.3",
+    "textual>=8.1.1",
+]
