@@ -166,8 +166,7 @@ def fetch_standings_data(conn: sqlite3.Connection, season: int) -> None:
         conn.commit()
 
 
-def fetch_batting_data(conn: sqlite3.Connection, season: int) -> None:
-    player_data = _get_all_players()
+def fetch_batting_data(conn: sqlite3.Connection, season: int, player_data: list[dict]) -> None:
     for player in player_data:
         if player.get("position", "No position found") == "Pitcher":
             continue
@@ -262,99 +261,101 @@ def fetch_batting_data(conn: sqlite3.Connection, season: int) -> None:
     conn.commit()
 
 
-def fetch_pitching_stats(conn: sqlite3.Connection, season: int) -> None:
-    player_data = _get_all_players()
+def fetch_pitching_stats(conn: sqlite3.Connection, season: int, player_data: list[dict]) -> None:
     for player in player_data:
-        if player.get("position", "") == "Pitcher":
+        if player.get("position", "") != "Pitcher":
+            continue
 
-            player_stats = statsapi.player_stat_data(
-                player.get("player_id", None),
-                group="pitching",
-                season=season
-            )
+        player_stats = statsapi.player_stat_data(
+            player.get("player_id", None),
+            group="pitching",
+            season=season
+        )
 
-            if not player_stats.get("stats"):
-                continue
+        if not player_stats.get("stats"):
+            continue
 
-            team = player_stats.get("current_team", "No current team found")
-            stat_line = player_stats.get("stats", "No stats found")
-            stats = stat_line[0]["stats"]
+        team = player_stats.get("current_team", "No current team found")
+        stat_line = player_stats.get("stats", "No stats found")
+        stats = stat_line[0]["stats"]
 
-            age = stats.get("age", None)
-            games_played = stats.get("gamesPlayed", None)
-            games_started = stats.get("gamesStarted", None)
-            wins = stats.get("wins", None)
-            losses = stats.get("losses", None)
-            saves = stats.get("saves", None)
-            innings_pitched = stats.get("inningsPitched", None)
-            strike_outs = stats.get("strikeOuts", None)
-            base_on_balls = stats.get("baseOnBalls", None)
-            era = stats.get("era", None)
-            whip = stats.get("whip", None)
-            strikeouts_per_9_innings = stats.get("strikeoutsPer9Inn", None)
-            walks_per_9_innings = stats.get("walksPer9Inn", None)
-            homeruns_per_9_innings = stats.get("homeRunsPer9", None)
+        age = stats.get("age", None)
+        games_played = stats.get("gamesPlayed", None)
+        games_started = stats.get("gamesStarted", None)
+        wins = stats.get("wins", None)
+        losses = stats.get("losses", None)
+        saves = stats.get("saves", None)
+        innings_pitched = stats.get("inningsPitched", None)
+        strike_outs = stats.get("strikeOuts", None)
+        base_on_balls = stats.get("baseOnBalls", None)
+        era = stats.get("era", None)
+        whip = stats.get("whip", None)
+        strikeouts_per_9_innings = stats.get("strikeoutsPer9Inn", None)
+        walks_per_9_innings = stats.get("walksPer9Inn", None)
+        homeruns_per_9_innings = stats.get("homeRunsPer9", None)
 
-            values = (
-                player.get("player_id", None),
-                player.get("player_name", None),
-                age,
-                team,
-                player.get("position", None),
-                player.get("pos_abbreviation", None),
-                season,
-                games_played,
-                games_started,
-                wins,
-                losses,
-                saves,
-                innings_pitched,
-                strike_outs,
-                base_on_balls,
-                era,
-                whip,
-                strikeouts_per_9_innings,
-                walks_per_9_innings,
-                homeruns_per_9_innings
-            )
+        values = (
+            player.get("player_id", None),
+            player.get("player_name", None),
+            age,
+            team,
+            player.get("position", None),
+            player.get("pos_abbreviation", None),
+            season,
+            games_played,
+            games_started,
+            wins,
+            losses,
+            saves,
+            innings_pitched,
+            strike_outs,
+            base_on_balls,
+            era,
+            whip,
+            strikeouts_per_9_innings,
+            walks_per_9_innings,
+            homeruns_per_9_innings
+        )
 
-            insert_query = """
-            INSERT OR REPLACE INTO pitching_stats (
-                player_id,
-                player_name,
-                age,
-                team,
-                position,
-                pos_abbreviation,
-                season,
-                games_played,
-                games_started,
-                wins,
-                losses,
-                saves,
-                innings_pitched,
-                strike_outs,
-                base_on_balls,
-                era,
-                whip,
-                strikeouts_per_9_innings,
-                walks_per_9_innings,
-                homeruns_per_9_innings
-            )
-            VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            conn.execute(insert_query, values)
-        conn.commit()
+        insert_query = """
+        INSERT OR REPLACE INTO pitching_stats (
+            player_id,
+            player_name,
+            age,
+            team,
+            position,
+            pos_abbreviation,
+            season,
+            games_played,
+            games_started,
+            wins,
+            losses,
+            saves,
+            innings_pitched,
+            strike_outs,
+            base_on_balls,
+            era,
+            whip,
+            strikeouts_per_9_innings,
+            walks_per_9_innings,
+            homeruns_per_9_innings
+        )
+        VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
+        conn.execute(insert_query, values)
+    conn.commit()
 
 
 def main():
+    player_data = _get_all_players()
     with console.status(status="Retrieving MLB Data..."):
         conn = get_connection(DB_PATH)
         create_tables(conn)
-        fetch_standings_data(conn, 2025)
-        fetch_batting_data(conn, 2025)
-        fetch_pitching_stats(conn, 2025)
+        for season in [2023, 2024, 2025]:
+            fetch_standings_data(conn, season)
+            fetch_batting_data(conn, season, player_data)
+            fetch_pitching_stats(conn, season, player_data)
         conn.close()
     console.print("Done!", style="bold green")
 
