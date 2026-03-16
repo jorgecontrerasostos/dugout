@@ -1,15 +1,18 @@
 import logging
 import sqlite3
 import pathlib
+import statsapi
+from rich import print
 
 DB_PATH = pathlib.Path(__file__).parent / "data" / "mlb_stats.db"
 
 
-def create_db():
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
+def get_connection(db_path: pathlib.Path) -> sqlite3.Connection:
+    return sqlite3.connect(db_path)
 
+def create_tables(conn: sqlite3.Connection):
+    try:
+        cursor = conn.cursor()
         standings_table = """
         CREATE TABLE IF NOT EXISTS standings (
             team_id INTEGER,
@@ -79,13 +82,52 @@ def create_db():
         cursor.execute(pitching_stats_table)
 
         conn.commit()
-        conn.close()
     except sqlite3.OperationalError:
-        logging.log(1, "Could not create DB")
+        logging.error("Could not create DB")
+        raise
 
+
+def fetch_standings_data(conn: sqlite3.Connection, season: int) -> None:
+    data = statsapi.standings_data(season=season)
+    for _, data in data.items():
+        division = data.get('div_name', 'No division found')
+        teams = data.get('teams', 'No teams found')
+        for team in teams:
+            team_id = team.get('team_id', 'No team_id found')
+            team_name = team.get('name', 'No team_name found')
+            wins = team.get('w', 'No wins found')
+            losses = team.get('l', 'No losses found')
+            games_back = team.get('gb', 'No games back found')
+            div_rank = team.get('div_rank', 'No division rank found')
+            league_rank = team.get('league_rank', 'No league rank found')
+            wildcard_rank = team.get('wc_rank', 'No wild card rank found')
+
+            insert_query = """
+              INSERT OR REPLACE INTO standings                                   
+                  (team_id, team_name, division, season, wins, losses,           
+              games_back, div_rank, league_rank, wildcard_rank)
+              VALUES
+                  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
+            values = (team_id,
+                      team_name,
+                      division,
+                      season,
+                      wins,
+                      losses,
+                      games_back,
+                      div_rank,
+                      league_rank,
+                      wildcard_rank)
+
+            conn.execute(insert_query, values)
+        conn.commit()
 
 def main():
-    create_db()
+    conn = get_connection(DB_PATH)
+    create_tables(conn)
+    fetch_standings_data(conn,  2025)
+    conn.close()
 
 
 if __name__ == "__main__":
