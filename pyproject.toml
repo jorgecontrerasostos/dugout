@@ -5,7 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12.12"
 dependencies = [
+    "anthropic>=0.84.0",
     "mlb-statsapi>=1.9.0",
+    "pysqlite3>=0.6.0",
     "rich>=14.3.3",
+    "ruff>=0.15.6",
     "textual>=8.1.1",
 ]

@@ -18,3 +18,9 @@ CLAUDE.md
 
 # ENV
 .env
+
+# API Exploration
+data-exploration/explore.py
+
+# Database
+src/data/*.db
