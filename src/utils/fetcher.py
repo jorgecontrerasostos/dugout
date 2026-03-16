@@ -2,11 +2,9 @@ import logging
 import sqlite3
 import pathlib
 import statsapi
-from pydantic_core.core_schema import str_schema
 from rich import print
 
-DB_PATH = pathlib.Path(__file__).parent / "data" / "mlb_stats.db"
-
+DB_PATH = pathlib.Path(__file__).parent.parent / "data" / "mlb_stats.db"
 
 def get_connection(db_path: pathlib.Path) -> sqlite3.Connection:
     return sqlite3.connect(db_path)
@@ -63,7 +61,7 @@ def create_tables(conn: sqlite3.Connection):
         CREATE TABLE IF NOT EXISTS pitching_stats (
             player_id INTEGER,
             player_name TEXT,
-            age INTEGER
+            age INTEGER,
             team TEXT,
             position TEXT,
             pos_abbreviation TEXT,
@@ -158,33 +156,37 @@ def fetch_batting_data(conn: sqlite3.Connection, season: int) -> None:
                 .get("primaryPosition", "No primary position found")
                 .get("abbreviation", "No type found")
             )
-            if position == 'P':
+            if position == "Pitcher":
                 continue
 
-            player_stats = statsapi.player_stat_data(player_id, group="hitting", season=season)
+            player_stats = statsapi.player_stat_data(
+                player_id, group="hitting", season=season
+            )
 
-            if not player_stats.get('stats'):
+            if not player_stats.get("stats"):
                 continue
 
             team = player_stats.get("current_team", "No current team found")
             stat_line = player_stats.get("stats", "No stats found")
-            age = stat_line[0].get("stats", "No stats found").get("age", "No age found")
-            games_played = stat_line[0].get("stats", "No stats found").get("gamesPlayed", "No games played")
-            at_bats = stat_line[0].get("stats", "No stats found").get("atBats", "No at bats found")
-            hits = stat_line[0].get("stats", "No stats found").get("hits", "No hits found")
-            doubles = stat_line[0].get("stats", "No stats found").get("doubles", "No doubles found")
-            triples = stat_line[0].get("stats", "No stats found").get("triples", "No triples found")
-            home_runs = stat_line[0].get("stats", "No stats found").get("homeRuns", "No home runs found")
-            rbi = stat_line[0].get("stats", "No stats found").get("rbi", "No rbis found")
-            runs = stat_line[0].get("stats", "No stats found").get("runs", "No runs found")
-            stolen_bases = stat_line[0].get("stats", "No stats found").get("runs", "No runs found")
-            strike_outs = stat_line[0].get("stats", "No stats found").get("strikeOuts", "No strikeouts found")
-            base_on_balls = stat_line[0].get("stats", "No stats found").get("baseOnBalls", "No base on balls found")
-            avg = stat_line[0].get("stats", "No stats found").get("avg", "No avg found")
-            obp = stat_line[0].get("stats", "No stats found").get("obp", "No obp found")
-            slg = stat_line[0].get("stats", "No stats found").get("slg", "No slg found")
-            ops = stat_line[0].get("stats", "No stats found").get("ops", "No ops found")
-            plate_appearances = stat_line[0].get("stats", "No stats found").get("plateAppearances", "No plate appearances found")
+            stats = stat_line[0]["stats"]
+
+            age = stats.get("age", None)
+            games_played = stats.get("gamesPlayed", None)
+            at_bats = stats.get("atBats", None)
+            hits = stats.get("hits", None)
+            doubles = stats.get("doubles", None)
+            triples = stats.get("triples", None)
+            home_runs = stats.get("homeRuns", None)
+            rbi = stats.get("rbi", None)
+            runs = stats.get("runs", None)
+            stolen_bases = stats.get("stolenBases", None)
+            strike_outs = stats.get("strikeOuts", None)
+            base_on_balls = stats.get("baseOnBalls", None)
+            avg = stats.get("avg", "No avg found")
+            obp = stats.get("obp", "No obp found")
+            slg = stats.get("slg", "No slg found")
+            ops = stats.get("ops", "No ops found")
+            plate_appearances = stats.get("plateAppearances", None)
 
             values = (
                 player_id,
@@ -209,7 +211,7 @@ def fetch_batting_data(conn: sqlite3.Connection, season: int) -> None:
                 avg,
                 obp,
                 slg,
-                ops
+                ops,
             )
 
             insert_query = """
@@ -243,6 +245,10 @@ def fetch_batting_data(conn: sqlite3.Connection, season: int) -> None:
             """
             conn.execute(insert_query, values)
         conn.commit()
+
+
+def fetch_pitching_stats(conn: sqlite3.Connection, season: int) -> None:
+    pass
 
 
 def main():
