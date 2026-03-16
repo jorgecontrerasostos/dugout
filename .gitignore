@@ -20,7 +20,7 @@ CLAUDE.md
 .env
 
 # API Exploration
-data-exploration/explore.py
+data-exploration/*
 
 # Database
 src/data/*.db
