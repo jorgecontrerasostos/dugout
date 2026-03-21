@@ -135,6 +135,7 @@ dependencies = [
     { name = "anthropic" },
     { name = "mlb-statsapi" },
     { name = "pysqlite3" },
+    { name = "python-dotenv" },
     { name = "rich" },
     { name = "ruff" },
     { name = "textual" },
@@ -145,6 +146,7 @@ requires-dist = [
     { name = "anthropic", specifier = ">=0.84.0" },
     { name = "mlb-statsapi", specifier = ">=1.9.0" },
     { name = "pysqlite3", specifier = ">=0.6.0" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "rich", specifier = ">=14.3.3" },
     { name = "ruff", specifier = ">=0.15.6" },
     { name = "textual", specifier = ">=8.1.1" },
@@ -451,6 +453,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/46/c8/f490d4890f1d1541efda54fea9249f9ae264c46fd5d0e12e5e2757f6abcb/pysqlite3-0.6.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:65a9af11004d350538b6bd852b0ec22cdd62928be9ab522d85c0840d5bf92a72", size = 4531310, upload-time = "2026-01-05T18:29:28.293Z" },
     { url = "https://files.pythonhosted.org/packages/e0/c3/ff97773adf35afaadaa969ae9fa20f09d25732b2ceba0b986f7039a89c6b/pysqlite3-0.6.0-cp314-cp314-win32.whl", hash = "sha256:cc9787dc409f800e310c8a457b7c98d1c4d4a76e15821b7fb460c0e63554ddd8", size = 744085, upload-time = "2026-01-05T18:29:29.277Z" },
     { url = "https://files.pythonhosted.org/packages/bc/76/103fc35bec8934c672b5193eadc66384472fd071c269cd95bc4b16595d17/pysqlite3-0.6.0-cp314-cp314-win_amd64.whl", hash = "sha256:81226436fae52d3bec4ce578104c5bcf4c22d3fcf29d4a590fcbde56b90472ef", size = 903944, upload-time = "2026-01-05T18:29:30.309Z" },
+]
+
+[[package]]
+name = "python-dotenv"
+version = "1.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/82/ed/0301aeeac3e5353ef3d94b6ec08bbcabd04a72018415dcb29e588514bba8/python_dotenv-1.2.2.tar.gz", hash = "sha256:2c371a91fbd7ba082c2c1dc1f8bf89ca22564a087c2c287cd9b662adde799cf3", size = 50135, upload-time = "2026-03-01T16:00:26.196Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0b/d7/1959b9648791274998a9c3526f6d0ec8fd2233e4d4acce81bbae76b44b2a/python_dotenv-1.2.2-py3-none-any.whl", hash = "sha256:1d8214789a24de455a8b8bd8ae6fe3c6b69a5e3d64aa8a8e5d68e694bbcb285a", size = 22101, upload-time = "2026-03-01T16:00:25.09Z" },
 ]
 
 [[package]]
