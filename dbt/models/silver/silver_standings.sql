@@ -9,6 +9,10 @@ select
     json_extract_string(record, '$.leagueRecord.losses') as losses,
     json_extract_string(record, '$.leagueRecord.pct') as pct,
     json_extract_string(record, '$.gamesBack') as games_back,
-    json_extract_string(record, '$.wildCardGamesBack') as wild_card_games_back
+    json_extract_string(record, '$.wildCardGamesBack') as wild_card_games_back,
+    json_extract_string(record, '$.records.splitRecords[0].wins') as home_wins,
+    json_extract_string(record, '$.records.splitRecords[0].losses') as home_losses,
+    json_extract_string(record, '$.records.splitRecords[1].wins') as away_wins,
+    json_extract_string(record, '$.records.splitRecords[1].losses') as away_losses,
 from {{ source('bronze', 'standings') }},
 unnest(from_json(teamRecords, '["json"]')) as t(record)
