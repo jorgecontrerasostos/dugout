@@ -14,5 +14,7 @@ select
     json_extract_string(record, '$.records.splitRecords[0].losses') as home_losses,
     json_extract_string(record, '$.records.splitRecords[1].wins') as away_wins,
     json_extract_string(record, '$.records.splitRecords[1].losses') as away_losses,
+    json_extract_string(record, '$.runDifferential') as run_differential,
+    json_extract_string(record, '$.streak.streakCode') as streak
 from {{ source('bronze', 'standings') }},
 unnest(from_json(teamRecords, '["json"]')) as t(record)
