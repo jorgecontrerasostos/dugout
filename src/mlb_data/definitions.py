@@ -24,5 +24,5 @@ defs = dg.Definitions(
     },
     jobs=[bronze_partitioned_job, bronze_snapshot_job, dbt_job],
     schedules=[bronze_partitioned_schedule, bronze_snapshot_schedule],
-    sensors=[on_bronze_partitioned_success]
+    sensors=[on_bronze_partitioned_success],
 )
