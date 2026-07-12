@@ -1,0 +1,8 @@
+#welcome_title {
+
+}
+
+#standings_container {
+    layout: grid;
+    grid-size: 3 2;
+}
