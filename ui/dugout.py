@@ -1,9 +1,12 @@
 from collections import defaultdict
 
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Header, DataTable, Label
-from textual.containers import Container, Vertical
+from textual.widgets import Footer, Header, DataTable, Label, Static
+from textual.containers import Container, Vertical, Horizontal
 from textual.screen import Screen
+
+
+from ascii import dugout_str
 
 import duckdb as dd
 
@@ -123,8 +126,16 @@ class Dugout(App):
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
+
         yield Header()
-        yield Label("Welcome to Dugout!", id="welcome_title")
+        yield Vertical(
+            Static(dugout_str, id="dugout_title"),
+            Static("\[s] - Standings", id="bindings"),
+            Static("\[w] - Wildcard Race"),
+            Static("\[d] - Toggle Dark Mode"),
+            Static("Ctrl + q - Quit"),
+            id="welcome_screen")
+
         yield Footer()
 
     def action_toggle_dark(self) -> None:
