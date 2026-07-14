@@ -12,4 +12,16 @@
 #standings_container {
     layout: grid;
     grid-size: 3 2;
+    height: auto;
+    grid-gutter: 2;
+}
+
+#standings_container Label {
+    text-align: center;
+    width: 100%;
+}
+
+#standings_screen_title {
+    text-align: center;
+    width: 100%;
 }
