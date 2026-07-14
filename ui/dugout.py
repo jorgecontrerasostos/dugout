@@ -1,9 +1,12 @@
 from collections import defaultdict
 
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Header, DataTable, Label
-from textual.containers import Container, Vertical
+from textual.widgets import Footer, Header, DataTable, Label, Static
+from textual.containers import Container, Vertical, Horizontal
 from textual.screen import Screen
+
+
+from ascii import dugout_str
 
 import duckdb as dd
 
@@ -46,9 +49,13 @@ class WildcardScreen(Screen):
 
             for group in sorted(groups):
                 wildcard_individual_container = Vertical()
-                wildcard_table = DataTable(id=group[0].lower().replace(" ", "") + "_" + group[1].lower())
+                wildcard_table = DataTable(
+                    id=group[0].lower().replace(" ", "") + "_" + group[1].lower()
+                )
                 wildcard_table_title = Label(
-                    group[0] + " Leaders" if group[1] == "leader" else group[0] + " Wildcard"
+                    group[0] + " Leaders"
+                    if group[1] == "leader"
+                    else group[0] + " Wildcard"
                 )
 
                 wildcard_container.mount(wildcard_individual_container)
@@ -70,6 +77,7 @@ class StandingsScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
+        yield Static("[bold]Standings[/bold]", id="standings_screen_title")
         yield Container(id="standings_container")
         yield Footer()
 
@@ -100,7 +108,11 @@ class StandingsScreen(Screen):
             for group in groups:
                 standing_individual_container = Vertical()
                 standings_table = DataTable(id=group[1].lower().replace(" ", ""))
-                standing_title = Label(group[1])
+                standing_title = Label(
+                    f"[bold #D50032]{group[1]}[/bold #D50032]"
+                    if "National League" in group[0]
+                    else f"[bold #002D72]{group[1]}[/bold #002D72]"
+                )
 
                 standings_container.mount(standing_individual_container)
                 standing_individual_container.mount(standing_title)
@@ -123,8 +135,17 @@ class Dugout(App):
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
+
         yield Header()
-        yield Label("Welcome to Dugout!", id="welcome_title")
+        yield Vertical(
+            Static(dugout_str, id="dugout_title"),
+            Static("\[s] - Standings", id="bindings_hint"),
+            Static("\[w] - Wildcard Race", id="wildcard_race_hint"),
+            Static("\[d] - Toggle Dark Mode", id="dark_mode_hint"),
+            Static("Ctrl + q - Quit", id="quit_hint"),
+            id="welcome_screen",
+        )
+
         yield Footer()
 
     def action_toggle_dark(self) -> None:

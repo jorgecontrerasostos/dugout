@@ -1,8 +1,27 @@
-#welcome_title {
 
+#welcome_screen {
+    align: center middle;
+    width: 100%;
+    height: 100%;
+}
+
+#welcome_screen Static {
+    width: auto;
 }
 
 #standings_container {
     layout: grid;
     grid-size: 3 2;
+    height: auto;
+    grid-gutter: 2;
+}
+
+#standings_container Label {
+    text-align: center;
+    width: 100%;
+}
+
+#standings_screen_title {
+    text-align: center;
+    width: 100%;
 }

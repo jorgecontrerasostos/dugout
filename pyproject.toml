@@ -15,12 +15,14 @@ dependencies = [
     "mlb-statsapi>=1.9.0",
     "requests>=2.34.1",
     "textual>=8.2.7",
+    "ascii-magic>=2.7.5",
 ]
 
 [dependency-groups]
 dev = [
     "ruff>=0.15.12",
     "pytest>=9.1.1",
+    "textual-dev>=1.8.0",
 ]
 
 [build-system]
