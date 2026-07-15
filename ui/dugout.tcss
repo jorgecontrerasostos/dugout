@@ -25,3 +25,13 @@
     text-align: center;
     width: 100%;
 }
+
+
+#wildcard_container Vertical {
+    height: auto;
+}
+
+#wildcard_screen_title {
+    text-align: center;
+    width: 100%;
+}

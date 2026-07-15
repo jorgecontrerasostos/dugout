@@ -16,7 +16,7 @@ class WildcardScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Label("Wildcard screen")
+        yield Label("Wildcard Race", id="wildcard_screen_title")
         yield Container(id="wildcard_container")
         yield Footer()
 
@@ -29,14 +29,14 @@ class WildcardScreen(Screen):
         with dd.connect("./db/mlb.duckdb") as con:
             wildcard = con.sql("SELECT * FROM gold.gold_wildcard").fetchall()
             cols = [
-                "team_name",
+                "team name",
                 "wins",
                 "losses",
                 "pct",
-                "wild_card_games_back",
-                "home_split",
-                "away_split",
-                "run_differential",
+                "wcgb",
+                "home split",
+                "away split",
+                "run differential",
                 "streak",
             ]
             for item in wildcard:
@@ -47,16 +47,28 @@ class WildcardScreen(Screen):
 
                 groups[item[0], section].append(item)
 
+            current_league = None
             for group in sorted(groups):
                 wildcard_individual_container = Vertical()
                 wildcard_table = DataTable(
                     id=group[0].lower().replace(" ", "") + "_" + group[1].lower()
                 )
-                wildcard_table_title = Label(
-                    group[0] + " Leaders"
+                label_text = (
+                    f"{group[0]} Leaders"
                     if group[1] == "leader"
-                    else group[0] + " Wildcard"
+                    else f"{group[0]} Wildcard"
                 )
+
+                label_color = (
+                    "#D50032" if "National League" in group[0] else "#002D72"
+                )
+
+                wildcard_table_title = Label(
+                    f"[bold {label_color}]{label_text}[/bold {label_color}]"
+                )
+
+                if current_league != group[0] and current_league is not None:
+                    wildcard_container.mount(Static("-" * self.size.width))
 
                 wildcard_container.mount(wildcard_individual_container)
                 wildcard_individual_container.mount(wildcard_table_title)
@@ -70,6 +82,7 @@ class WildcardScreen(Screen):
                     else:
                         transformed_rows.append(row)
                 wildcard_table.add_rows(row[1:] for row in transformed_rows)
+                current_league = group[0]
 
 
 class StandingsScreen(Screen):
