@@ -68,7 +68,7 @@ class WildcardScreen(Screen):
                 )
 
                 if current_league != group[0] and current_league is not None:
-                    wildcard_container.mount(Static("-" * 100))
+                    wildcard_container.mount(Static("-" * self.size.width))
 
                 wildcard_container.mount(wildcard_individual_container)
                 wildcard_individual_container.mount(wildcard_table_title)
