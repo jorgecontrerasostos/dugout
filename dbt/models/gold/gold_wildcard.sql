@@ -19,4 +19,4 @@ select
 from {{ ref('silver_standings') }} as s
 join {{ ref('silver_teams') }} as t
 on t.team_id = s.team_id
-order by t.league_name, s.wild_card_games_back
+order by t.league_name, s.wild_card_games_back, s.pct desc

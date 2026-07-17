@@ -35,3 +35,5 @@ docs/*
 .idea/
 
 .dagster_home/
+
+.DS_STORE
