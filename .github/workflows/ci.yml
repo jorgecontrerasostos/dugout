@@ -1,0 +1,58 @@
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: set up python
+        run: uv python install
+
+      - name: uv sync
+        run: uv sync
+
+      - name: format
+        run: uv run ruff format --check
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: set up python
+        run: uv python install
+
+      - name: uv sync
+        run: uv sync
+
+      - name: linting
+        run: |
+          uv run ruff check
+          uv run mypy src/ ui/
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: set up python
+        run: uv python install
+
+      - name: uv sync
+        run: uv sync
+
+      - name: running tests
+        run: uv run pytest
