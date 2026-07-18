@@ -1,4 +1,3 @@
-import dagster as dg
 from dagster import AssetExecutionContext
 from dagster_dbt import DbtCliResource, dbt_assets
 from constants import MANIFEST_PATH

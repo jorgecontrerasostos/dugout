@@ -23,6 +23,7 @@ dev = [
     "ruff>=0.15.12",
     "pytest>=9.1.1",
     "textual-dev>=1.8.0",
+    "mypy>=1.19.1",
 ]
 
 [build-system]
@@ -37,3 +38,6 @@ directory_type = "project"
 
 [tool.dg.project]
 root_module = "mlb_data"
+
+[tool.mypy]
+ignore_missing_imports = true
