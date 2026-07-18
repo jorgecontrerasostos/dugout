@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header, DataTable, Label, Static
-from textual.containers import Container, Vertical, Horizontal
+from textual.containers import Container, Vertical
 from textual.screen import Screen
 
 
@@ -59,9 +59,7 @@ class WildcardScreen(Screen):
                     else f"{group[0]} Wildcard"
                 )
 
-                label_color = (
-                    "#D50032" if "National League" in group[0] else "#002D72"
-                )
+                label_color = "#D50032" if "National League" in group[0] else "#002D72"
 
                 wildcard_table_title = Label(
                     f"[bold {label_color}]{label_text}[/bold {label_color}]"

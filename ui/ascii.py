@@ -1,6 +1,6 @@
-
 from ascii_magic import AsciiArt
-baseball = AsciiArt.from_image('./public/baseball.png').to_ascii(columns=30)
+
+baseball = AsciiArt.from_image("./public/baseball.png").to_ascii(columns=30)
 dugout_str = """
 ██████╗ ██╗   ██╗ ██████╗  ██████╗ ██╗   ██╗████████╗
 ██╔══██╗██║   ██║██╔════╝ ██╔═══██╗██║   ██║╚══██╔══╝
