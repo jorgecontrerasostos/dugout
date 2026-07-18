@@ -38,3 +38,6 @@ directory_type = "project"
 
 [tool.dg.project]
 root_module = "mlb_data"
+
+[tool.mypy]
+ignore_missing_imports = true
