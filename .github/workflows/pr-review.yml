@@ -1,0 +1,14 @@
+on:
+  pull_request:
+    types:
+      - opened
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  pr-reviewer:
+    runs-on: self-hosted
+
+    steps:
+      - run: echo "This works"
