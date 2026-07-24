@@ -104,8 +104,9 @@ class StandingsScreen(Screen):
             for item in standings:
                 groups[(item[0], item[1])].append(item)
             """
-            groups is a dictionary in which the key is a tuple made of the league and division
-            and the values is a list of tuples containing the whole row values
+            groups is a dictionary in which the key is a tuple made of the
+            league and division and the values is a list of tuples containing 
+            the whole row values
             {
             ("American League", "AL East"): [
                     ("American League", "AL East", "New York Yankees", 50, 30, 0.625, 0.0),

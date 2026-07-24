@@ -18,7 +18,8 @@ daily_partition = dg.DailyPartitionsDefinition(start_date="2026-03-25")
 )
 def schedule(context: dg.AssetExecutionContext) -> pd.DataFrame:
     """
-    Retrieves a schedule of games based on the provided date or current date if no date parameter is provided.
+    Retrieves a schedule of games based on the provided date or current date
+    if no date parameter is provided.
 
     Args:
         context (dg.AssetExecutionContext): The execution context for the asset.
