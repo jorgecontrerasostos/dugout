@@ -1,11 +1,13 @@
-import dagster as dg
-import pandas as pd
-import statsapi
 import json
 import time
 
-from .schedule import daily_partition
+import dagster as dg
+import pandas as pd
+import statsapi
+
 from constants import SPORTS_ID
+
+from .schedule import daily_partition
 
 
 @dg.asset(

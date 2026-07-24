@@ -1,10 +1,10 @@
+from datetime import datetime, timedelta
+
 import dagster as dg
 
-from ..assets.schedule import schedule
 from ..assets.game_feed import game_feed
 from ..assets.player_stats import player_stats
-
-from datetime import datetime, timedelta
+from ..assets.schedule import schedule
 
 
 def _target_partition_key(date: datetime) -> str:

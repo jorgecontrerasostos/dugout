@@ -8,6 +8,8 @@ on:
 
 jobs:
   pr-reviewer:
+    permissions:
+      pull-requests: write
     env:
       PR_NUMBER: >-
         ${{ github.event_name == 'pull_request' &&

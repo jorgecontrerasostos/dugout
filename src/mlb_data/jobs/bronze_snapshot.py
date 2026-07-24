@@ -1,7 +1,7 @@
 import dagster as dg
 
-from ..assets.teams import teams
 from ..assets.standings import standings
+from ..assets.teams import teams
 
 bronze_snapshot_job = dg.define_asset_job(
     name="bronze_snapshot_job",
