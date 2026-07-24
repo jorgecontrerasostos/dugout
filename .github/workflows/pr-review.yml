@@ -8,7 +8,39 @@ on:
 
 jobs:
   pr-reviewer:
+    env:
+      PR_NUMBER: >-
+        ${{ github.event_name == 'pull_request' &&
+        github.event.pull_request.number ||
+        github.event.issue.number }}
+
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    if: >- 
+      github.event_name == 'pull_request' ||
+      (contains(github.event.comment.body, '/review') &&
+      github.event.issue.pull_request != null)
     runs-on: self-hosted
 
     steps:
-      - run: echo "This works"
+      - uses: actions/checkout@v7
+
+      - name: Getting diff and metadata
+        run: |
+          gh pr diff $PR_NUMBER > pr_diff.txt
+          gh pr view $PR_NUMBER > pr_metadata.txt
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: set up python
+        run: uv python install
+
+      - name: install dependencies
+        run: uv sync
+
+      - name: analyzing pr
+        run: |
+          uv run scripts/ai_review.py pr_metadata.txt pr_diff.txt
+
+      - name: posting comment
+        run: gh pr comment $PR_NUMBER --body-file pr_comment.txt
