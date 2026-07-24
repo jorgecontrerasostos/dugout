@@ -1,14 +1,11 @@
 from collections import defaultdict
 
+import duckdb as dd
+from ascii import dugout_str
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Header, DataTable, Label, Static
 from textual.containers import Container, Vertical
 from textual.screen import Screen
-
-
-from ascii import dugout_str
-
-import duckdb as dd
+from textual.widgets import DataTable, Footer, Header, Label, Static
 
 
 class WildcardScreen(Screen):
@@ -150,9 +147,9 @@ class Dugout(App):
         yield Header()
         yield Vertical(
             Static(dugout_str, id="dugout_title"),
-            Static("\[s] - Standings", id="bindings_hint"),
-            Static("\[w] - Wildcard Race", id="wildcard_race_hint"),
-            Static("\[d] - Toggle Dark Mode", id="dark_mode_hint"),
+            Static(r"\[s] - Standings", id="bindings_hint"),
+            Static(r"\[w] - Wildcard Race", id="wildcard_race_hint"),
+            Static(r"\[d] - Toggle Dark Mode", id="dark_mode_hint"),
             Static("Ctrl + q - Quit", id="quit_hint"),
             id="welcome_screen",
         )

@@ -1,7 +1,7 @@
 import dagster as dg
 
-from ..jobs.bronze_partitioned import bronze_partitioned_job
 from ..assets.dbt import dbt_models
+from ..jobs.bronze_partitioned import bronze_partitioned_job
 
 dbt_job = dg.define_asset_job(
     name="dbt_job",

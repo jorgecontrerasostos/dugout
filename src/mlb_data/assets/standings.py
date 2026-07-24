@@ -1,7 +1,8 @@
+import json
+
 import dagster as dg
 import pandas as pd
 import statsapi
-import json
 
 
 @dg.asset(

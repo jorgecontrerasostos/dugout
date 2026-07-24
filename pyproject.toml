@@ -41,3 +41,7 @@ root_module = "mlb_data"
 
 [tool.mypy]
 ignore_missing_imports = true
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "BLE"]
+ignore = ["RUF012", "DTZ001"]
