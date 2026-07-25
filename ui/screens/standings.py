@@ -1,10 +1,11 @@
-from textual.widgets import Header, Static, Footer, DataTable, Label
-from textual.containers import Container, Vertical
-from textual.app import App, ComposeResult
-from textual.screen import Screen
-
 from collections import defaultdict
+
 import duckdb as dd
+from textual.app import ComposeResult
+from textual.containers import Container, Vertical
+from textual.screen import Screen
+from textual.widgets import DataTable, Footer, Header, Label, Static
+
 
 class StandingsScreen(Screen):
     BINDINGS = [("b", "app.pop_screen", "Back")]

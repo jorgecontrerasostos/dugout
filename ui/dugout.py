@@ -1,11 +1,10 @@
-
 from ascii import dugout_str
+from screens.standings import StandingsScreen
+from screens.wildcard import WildcardScreen
 from textual.app import App, ComposeResult
 from textual.containers import Vertical
 from textual.widgets import Footer, Header, Static
 
-from screens.standings import StandingsScreen
-from screens.wildcard import WildcardScreen
 
 class Dugout(App):
     """Dugout is a TUI (Terminal User Interface) that displays MLB Data."""
