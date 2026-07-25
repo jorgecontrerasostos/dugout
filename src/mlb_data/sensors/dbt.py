@@ -9,7 +9,7 @@ dbt_job = dg.define_asset_job(
     description="""
         This job executes selected dbt_models belonging to the silver layer
         once their respective bronze models are materialized
-        """
+        """,
 )
 
 
