@@ -41,7 +41,7 @@ def main() -> None:
     try:
         with open("pr_comment.txt", "w", encoding="utf-8") as f:
             f.write(response_data)
-    except Exception as e:
+    except (FileNotFoundError, PermissionError) as e:
         log.error(f"Could not write file: {e}")
 
 

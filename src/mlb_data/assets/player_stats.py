@@ -3,6 +3,7 @@ import time
 
 import dagster as dg
 import pandas as pd
+from requests.exceptions import RequestException
 import statsapi
 
 from constants import SPORTS_ID
@@ -64,7 +65,7 @@ def player_stats(context: dg.AssetExecutionContext) -> pd.DataFrame:
                     "stats": json.dumps(stats),
                 }
             )
-        except Exception as e:
+        except RequestException as e:
             context.log.error(f"Could not retrieve player stats: {e}")
 
     return pd.DataFrame(stat_rows, columns=["player_id", "date", "stats"])
