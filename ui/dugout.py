@@ -96,7 +96,8 @@ class StandingsScreen(Screen):
         # accessing standings container by its id
         standings_container = self.get_widget_by_id("standings_container", Container)
 
-        # connecting to duckdb file using with so they connection is closed automatically
+        # connecting to duckdb file using with so the connection
+        # is closed automatically
         with dd.connect("./db/mlb.duckdb") as con:
             standings = con.sql("SELECT * FROM gold.gold_standings").fetchall()
             cols = ["team", "wins", "losses", "pct", "games back"]
@@ -104,12 +105,13 @@ class StandingsScreen(Screen):
             for item in standings:
                 groups[(item[0], item[1])].append(item)
             """
-            groups is a dictionary in which the key is a tuple made of the league and division
-            and the values is a list of tuples containing the whole row values
+            groups is a dictionary in which the key is a tuple made of the
+            league and division and the values is a list of tuples
+            containing the whole row values
             {
             ("American League", "AL East"): [
-                    ("American League", "AL East", "New York Yankees", 50, 30, 0.625, 0.0),
-                    ("American League", "AL East", "Baltimore Orioles", 45, 35, 0.562, 5.0)
+                ("American League", "AL East", "New York Yankees", 50, 30, 0.625, 0.0),
+                ("American League", "AL East", "Baltimore Orioles", 45, 35, 0.562, 5.0)
                 ]
             }
             """

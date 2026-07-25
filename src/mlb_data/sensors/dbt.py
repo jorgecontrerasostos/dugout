@@ -6,7 +6,10 @@ from ..jobs.bronze_partitioned import bronze_partitioned_job
 dbt_job = dg.define_asset_job(
     name="dbt_job",
     selection=[dbt_models],
-    description="This job executes selected dbt_models belonging to the silver layer once their respective bronze models are materialized",
+    description="""
+        This job executes selected dbt_models belonging to the silver layer
+        once their respective bronze models are materialized
+        """,
 )
 
 

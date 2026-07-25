@@ -4,6 +4,7 @@ import time
 import dagster as dg
 import pandas as pd
 import statsapi
+from requests.exceptions import RequestException
 
 from constants import SPORTS_ID
 
@@ -21,10 +22,12 @@ def player_stats(context: dg.AssetExecutionContext) -> pd.DataFrame:
     """Retrieve and process daily MLB player statistics.
 
     This function fetches player statistics for a given date from the MLB StatsAPI,
-    processes the data, and returns it as a pandas DataFrame. The data is partitioned by date.
+    processes the data, and returns it as a pandas DataFrame.
+    The data is partitioned by date.
 
     Args:
-        context (dg.AssetExecutionContext): The Dagster execution context containing partition key.
+        context (dg.AssetExecutionContext):
+            The Dagster execution context containing partition key.
 
     Returns:
         pd.DataFrame: A DataFrame containing player information along with their stats.
@@ -62,7 +65,7 @@ def player_stats(context: dg.AssetExecutionContext) -> pd.DataFrame:
                     "stats": json.dumps(stats),
                 }
             )
-        except Exception as e:
+        except RequestException as e:
             context.log.error(f"Could not retrieve player stats: {e}")
 
     return pd.DataFrame(stat_rows, columns=["player_id", "date", "stats"])
