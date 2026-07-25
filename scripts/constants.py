@@ -4,15 +4,13 @@ URL = "http://localhost:11434/api/generate"
 def prompt(pr_metadata: str, pr_diff: str) -> str:
     return f"""
       ## Instructions
-
       You are an experienced code reviewer for my personal data
       engineering and software projects.
 
       When reviewing my PRs, focus on the diff only not the overall
-      project state. 
+      project state.
       
       Output something structure like:
-      
       - Issues
       - Suggestions
       - Looks Good
