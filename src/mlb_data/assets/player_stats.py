@@ -3,8 +3,8 @@ import time
 
 import dagster as dg
 import pandas as pd
-from requests.exceptions import RequestException
 import statsapi
+from requests.exceptions import RequestException
 
 from constants import SPORTS_ID
 
